@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{COMPANY_NAME_KR}} ESG Report {{YEAR}}</title>
+  <style>
+    /* ========================================
+       ESG Report Template — Professional Style
+       Self-contained, no external dependencies
+       ======================================== */
+
+    /* --- Reset & Base --- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Pillar Colors */
+      --color-e: #2E7D32;
+      --color-e-bg: #E8F5E9;
+      --color-e-light: #A5D6A7;
+      --color-s: #1565C0;
+      --color-s-bg: #E3F2FD;
+      --color-s-light: #90CAF9;
+      --color-g: #6A1B9A;
+      --color-g-bg: #F3E5F5;
+      --color-g-light: #CE93D8;
+
+      /* Neutral */
+      --color-text: #212121;
+      --color-text-secondary: #616161;
+      --color-border: #E0E0E0;
+      --color-bg: #FFFFFF;
+      --color-bg-alt: #FAFAFA;
+      --color-accent: #1B5E20;
+
+      /* Typography */
+      --font-kr: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-en: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+
+    body {
+      font-family: var(--font-kr);
+      color: var(--color-text);
+      background: var(--color-bg);
+      line-height: 1.75;
+      font-size: 15px;
+    }
+
+    .lang-en {
+      font-family: var(--font-en);
+    }
+
+    /* --- Layout --- */
+    .report-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* --- Cover Page --- */
+    .cover {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(135deg, var(--color-e) 0%, var(--color-s) 50%, var(--color-g) 100%);
+      color: white;
+      padding: 60px 40px;
+      page-break-after: always;
+    }
+
+    .cover h1 {
+      font-size: 42px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .cover .subtitle {
+      font-size: 24px;
+      font-weight: 300;
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+
+    .cover .year-badge {
+      display: inline-block;
+      font-size: 64px;
+      font-weight: 900;
+      border: 3px solid rgba(255,255,255,0.5);
+      border-radius: 16px;
+      padding: 16px 48px;
+      margin-bottom: 40px;
+    }
+
+    .cover .company-name {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .cover .company-name-en {
+      font-size: 20px;
+      font-weight: 300;
+      opacity: 0.85;
+    }
+
+    .cover .pillar-badges {
+      display: flex;
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .cover .pillar-badge {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 800;
+    }
+
+    .cover .pillar-badge span {
+      font-size: 11px;
+      font-weight: 400;
+      margin-top: 4px;
+      opacity: 0.8;
+    }
+
+    /* --- Language Toggle --- */
+    .lang-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      gap: 4px;
+      background: white;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .lang-toggle button {
+      border: none;
+      background: transparent;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      transition: all 0.2s;
+    }
+
+    .lang-toggle button.active {
+      background: var(--color-accent);
+      color: white;
+    }
+
+    /* Language visibility */
+    body.show-kr .content-en { display: none; }
+    body.show-en .content-kr { display: none; }
+    body.show-both .content-kr,
+    body.show-both .content-en { display: block; }
+
+    .content-en {
+      color: var(--color-text-secondary);
+      border-left: 3px solid var(--color-border);
+      padding-left: 16px;
+      margin-top: 12px;
+      font-style: italic;
+      font-family: var(--font-en);
+    }
+
+    /* --- Navigation / TOC --- */
+    .toc {
+      page-break-after: always;
+      padding: 60px 0;
+    }
+
+    .toc h2 {
+      font-size: 28px;
+      margin-bottom: 32px;
+      color: var(--color-accent);
+    }
+
+    .toc-list {
+      list-style: none;
+    }
+
+    .toc-list li {
+      padding: 8px 0;
+      border-bottom: 1px dotted var(--color-border);
+    }
+
+    .toc-list li a {
+      color: var(--color-text);
+      text-decoration: none;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .toc-list li a:hover {
+      color: var(--color-accent);
+    }
+
+    .toc-list .toc-section {
+      font-weight: 700;
+      font-size: 16px;
+      padding-top: 16px;
+    }
+
+    .toc-list .toc-subsection {
+      padding-left: 24px;
+      font-size: 14px;
+    }
+
+    /* --- Section Headers --- */
+    .section {
+      padding: 48px 0 32px;
+      page-break-before: auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 3px solid var(--color-border);
+    }
+
+    .section-header.pillar-e { border-bottom-color: var(--color-e); }
+    .section-header.pillar-s { border-bottom-color: var(--color-s); }
+    .section-header.pillar-g { border-bottom-color: var(--color-g); }
+
+    .section-number {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--color-text-secondary);
+      opacity: 0.3;
+      min-width: 60px;
+    }
+
+    .section-title h2 {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .section-title .title-en {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--color-text-secondary);
+      font-family: var(--font-en);
+    }
+
+    h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 32px 0 16px;
+      color: var(--color-text);
+    }
+
+    h4 {
+      font-size: 17px;
+      font-weight: 600;
+      margin: 24px 0 12px;
+      color: var(--color-text-secondary);
+    }
+
+    p {
+      margin-bottom: 16px;
+    }
+
+    /* --- Pillar Color Backgrounds --- */
+    .pillar-section-e { background: var(--color-e-bg); }
+    .pillar-section-s { background: var(--color-s-bg); }
+    .pillar-section-g { background: var(--color-g-bg); }
+
+    .pillar-section-e,
+    .pillar-section-s,
+    .pillar-section-g {
+      border-radius: 12px;
+      padding: 32px;
+      margin: 24px 0;
+    }
+
+    /* --- Framework Tags --- */
+    .framework-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 16px 0;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      letter-spacing: 0.3px;
+    }
+
+    .tag-gri { background: #E8F5E9; color: #2E7D32; }
+    .tag-issb { background: #E3F2FD; color: #1565C0; }
+    .tag-sasb { background: #FFF3E0; color: #E65100; }
+    .tag-tcfd { background: #FCE4EC; color: #C62828; }
+    .tag-cdp { background: #FFF8E1; color: #F57F17; }
+    .tag-kesg { background: #F3E5F5; color: #6A1B9A; }
+    .tag-kssb { background: #E8EAF6; color: #283593; }
+    .tag-sdgs { background: #E0F2F1; color: #00695C; }
+    .tag-tnfd { background: #E8F5E9; color: #1B5E20; }
+    .tag-sbti { background: #EFEBE9; color: #4E342E; }
+
+    /* --- Tables --- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 14px;
+    }
+
+    thead th {
+      background: var(--color-bg-alt);
+      font-weight: 700;
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 2px solid var(--color-border);
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--color-border);
+      vertical-align: top;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--color-bg-alt);
+    }
+
+    tbody tr:hover {
+      background: #F5F5F5;
+    }
+
+    /* Data alignment */
+    .text-right { text-align: right; }
+    .text-center { text-align: center; }
+
+    /* Trend indicators */
+    .trend-up { color: var(--color-e); font-weight: 700; }
+    .trend-down { color: #C62828; font-weight: 700; }
+    .trend-flat { color: var(--color-text-secondary); }
+
+    /* --- KPI Cards --- */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin: 24px 0;
+    }
+
+    .kpi-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .kpi-card.card-e { border-top: 4px solid var(--color-e); }
+    .kpi-card.card-s { border-top: 4px solid var(--color-s); }
+    .kpi-card.card-g { border-top: 4px solid var(--color-g); }
+
+    .kpi-label {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .kpi-value {
+      font-size: 36px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .kpi-unit {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+    }
+
+    .kpi-trend {
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    /* --- Materiality Matrix (placeholder) --- */
+    .materiality-matrix {
+      width: 100%;
+      height: 400px;
+      background: var(--color-bg-alt);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 24px 0;
+      position: relative;
+    }
+
+    .matrix-label-x {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 13px;
+      color: var(--color-text-secondary);
+    }
+
+    .matrix-label-y {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      font-size: 13px;
+      color: var(--color-text-secondary);
+    }
+
+    /* --- Callout / Highlight Boxes --- */
+    .callout {
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+
+    .callout-info {
+      background: #E3F2FD;
+      border-left: 4px solid var(--color-s);
+    }
+
+    .callout-success {
+      background: #E8F5E9;
+      border-left: 4px solid var(--color-e);
+    }
+
+    .callout-warning {
+      background: #FFF3E0;
+      border-left: 4px solid #E65100;
+    }
+
+    .callout-data-needed {
+      background: #FFF8E1;
+      border-left: 4px solid #F57F17;
+      font-style: italic;
+    }
+
+    /* --- Framework Index Table --- */
+    .framework-index th:first-child {
+      width: 160px;
+    }
+
+    .framework-index td:first-child {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* --- Footer --- */
+    .report-footer {
+      margin-top: 60px;
+      padding: 32px 0;
+      border-top: 2px solid var(--color-border);
+      text-align: center;
+      font-size: 13px;
+      color: var(--color-text-secondary);
+    }
+
+    .disclaimer {
+      max-width: 800px;
+      margin: 32px auto;
+      padding: 24px;
+      background: var(--color-bg-alt);
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+
+    /* --- Print Styles --- */
+    @media print {
+      body { font-size: 11pt; }
+
+      .lang-toggle { display: none !important; }
+
+      .cover {
+        min-height: auto;
+        padding: 80px 40px;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .section { page-break-before: auto; }
+      .section-header { page-break-after: avoid; }
+      h2, h3 { page-break-after: avoid; }
+      table { page-break-inside: avoid; }
+      .kpi-grid { page-break-inside: avoid; }
+
+      .pillar-section-e,
+      .pillar-section-s,
+      .pillar-section-g {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      @page {
+        margin: 2cm;
+        @bottom-center {
+          content: counter(page);
+          font-size: 10pt;
+        }
+      }
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 768px) {
+      .report-container { padding: 0 20px; }
+      .cover h1 { font-size: 28px; }
+      .cover .year-badge { font-size: 40px; padding: 12px 32px; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .kpi-value { font-size: 28px; }
+      table { font-size: 12px; }
+      thead th, tbody td { padding: 8px; }
+    }
+  </style>
+</head>
+<body class="show-both">
+
+  <!-- Language Toggle -->
+  <div class="lang-toggle">
+    <button onclick="setLang('kr')">KR</button>
+    <button onclick="setLang('en')">EN</button>
+    <button class="active" onclick="setLang('both')">Both</button>
+  </div>
+
+  <!-- ==================== COVER PAGE ==================== -->
+  <div class="cover">
+    <div class="year-badge">{{YEAR}}</div>
+    <h1>ESG Report</h1>
+    <div class="subtitle">
+      <span class="content-kr">지속가능경영보고서</span>
+      <span class="content-en">Sustainability Report</span>
+    </div>
+    <div class="company-name">{{COMPANY_NAME_KR}}</div>
+    <div class="company-name-en">{{COMPANY_NAME_EN}}</div>
+    <div class="pillar-badges">
+      <div class="pillar-badge">E<span>Environmental</span></div>
+      <div class="pillar-badge">S<span>Social</span></div>
+      <div class="pillar-badge">G<span>Governance</span></div>
+    </div>
+  </div>
+
+  <div class="report-container">
+
+    <!-- ==================== TABLE OF CONTENTS ==================== -->
+    <div class="toc" id="toc">
+      <h2>
+        <span class="content-kr">목차</span>
+        <span class="content-en">Table of Contents</span>
+      </h2>
+      <ul class="toc-list">
+        <li class="toc-section"><a href="#section-1">1. CEO 메시지 / CEO Message</a></li>
+        <li class="toc-section"><a href="#section-2">2. 회사 개요 / Company Overview</a></li>
+        <li class="toc-section"><a href="#section-3">3. ESG 전략 및 관리체계 / ESG Strategy & Management</a></li>
+        <li class="toc-subsection"><a href="#section-3-3">3.3 중대성 평가 / Materiality Assessment</a></li>
+        <li class="toc-section"><a href="#section-4">4. 환경 / Environmental</a></li>
+        <li class="toc-subsection"><a href="#section-4-1">4.1 기후변화 대응 / Climate Change Response</a></li>
+        <li class="toc-subsection"><a href="#section-4-2">4.2 온실가스 배출 / GHG Emissions</a></li>
+        <li class="toc-section"><a href="#section-5">5. 사회 / Social</a></li>
+        <li class="toc-subsection"><a href="#section-5-1">5.1 인적자본 관리 / Human Capital Management</a></li>
+        <li class="toc-section"><a href="#section-6">6. 지배구조 / Governance</a></li>
+        <li class="toc-subsection"><a href="#section-6-1">6.1 이사회 / Board of Directors</a></li>
+        <li class="toc-section"><a href="#section-7">7. 성과 데이터 / Performance Data</a></li>
+        <li class="toc-section"><a href="#section-8">8. 부록 / Appendix</a></li>
+      </ul>
+    </div>
+
+    <!-- ==================== SECTION 1: CEO MESSAGE ==================== -->
+    <div class="section" id="section-1">
+      <div class="section-header">
+        <div class="section-number">01</div>
+        <div class="section-title">
+          <h2>CEO 메시지</h2>
+          <div class="title-en">CEO Message</div>
+        </div>
+      </div>
+      <div class="content-kr">
+        <!-- {{CEO_MESSAGE_KR}} -->
+        <p>[CEO 메시지 한국어 내용이 여기에 들어갑니다]</p>
+      </div>
+      <div class="content-en">
+        <!-- {{CEO_MESSAGE_EN}} -->
+        <p>[CEO Message English content goes here]</p>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 4: ENVIRONMENTAL (Example) ==================== -->
+    <div class="section" id="section-4">
+      <div class="section-header pillar-e">
+        <div class="section-number">04</div>
+        <div class="section-title">
+          <h2>환경</h2>
+          <div class="title-en">Environmental</div>
+        </div>
+      </div>
+
+      <!-- KPI Dashboard Example -->
+      <div class="kpi-grid">
+        <div class="kpi-card card-e">
+          <div class="kpi-label">GHG Scope 1+2 배출량</div>
+          <div class="kpi-value">{{GHG_SCOPE12}}</div>
+          <div class="kpi-unit">tCO2e</div>
+          <div class="kpi-trend trend-up">▼ {{GHG_CHANGE}}% vs. {{PREV_YEAR}}</div>
+        </div>
+        <div class="kpi-card card-e">
+          <div class="kpi-label">재생에너지 비율</div>
+          <div class="kpi-value">{{RE_RATIO}}</div>
+          <div class="kpi-unit">%</div>
+          <div class="kpi-trend trend-up">▲ {{RE_CHANGE}}%p vs. {{PREV_YEAR}}</div>
+        </div>
+        <div class="kpi-card card-e">
+          <div class="kpi-label">폐기물 재활용률</div>
+          <div class="kpi-value">{{WASTE_RECYCLING}}</div>
+          <div class="kpi-unit">%</div>
+          <div class="kpi-trend trend-up">▲ {{WASTE_CHANGE}}%p vs. {{PREV_YEAR}}</div>
+        </div>
+        <div class="kpi-card card-e">
+          <div class="kpi-label">환경 투자액</div>
+          <div class="kpi-value">{{ENV_INVESTMENT}}</div>
+          <div class="kpi-unit">억원</div>
+          <div class="kpi-trend trend-up">▲ {{ENV_INV_CHANGE}}% vs. {{PREV_YEAR}}</div>
+        </div>
+      </div>
+
+      <!-- Section 4.1 Example -->
+      <div id="section-4-1">
+        <h3>4.1 기후변화 대응 <span class="title-en">/ Climate Change Response</span></h3>
+        <div class="framework-tags">
+          <span class="tag tag-tcfd">TCFD</span>
+          <span class="tag tag-issb">ISSB S2</span>
+          <span class="tag tag-kesg">K-ESG E-1</span>
+          <span class="tag tag-kssb">KSSB 기후</span>
+        </div>
+
+        <div class="content-kr">
+          <p><!-- {{CLIMATE_RESPONSE_KR}} -->[기후변화 대응 내용]</p>
+        </div>
+        <div class="content-en">
+          <p><!-- {{CLIMATE_RESPONSE_EN}} -->[Climate change response content]</p>
+        </div>
+      </div>
+
+      <!-- Data Table Example -->
+      <div id="section-4-2">
+        <h3>4.2 온실가스 배출 <span class="title-en">/ GHG Emissions</span></h3>
+        <div class="framework-tags">
+          <span class="tag tag-gri">GRI 305-1~5</span>
+          <span class="tag tag-issb">ISSB S2 ¶29</span>
+          <span class="tag tag-kesg">K-ESG E-2</span>
+          <span class="tag tag-sbti">SBTi</span>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>구분 / Category</th>
+              <th>단위 / Unit</th>
+              <th class="text-right">{{YEAR_PREV2}}</th>
+              <th class="text-right">{{YEAR_PREV}}</th>
+              <th class="text-right">{{YEAR}}</th>
+              <th class="text-center">증감 / Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Scope 1 직접 배출</td>
+              <td>tCO2e</td>
+              <td class="text-right"><!-- {{DATA}} --></td>
+              <td class="text-right"><!-- {{DATA}} --></td>
+              <td class="text-right"><!-- {{DATA}} --></td>
+              <td class="text-center"><!-- {{TREND}} --></td>
+            </tr>
+            <!-- Additional rows... -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ==================== SECTION 5: SOCIAL (Example) ==================== -->
+    <div class="section" id="section-5">
+      <div class="section-header pillar-s">
+        <div class="section-number">05</div>
+        <div class="section-title">
+          <h2>사회</h2>
+          <div class="title-en">Social</div>
+        </div>
+      </div>
+      <!-- Social section content -->
+    </div>
+
+    <!-- ==================== SECTION 6: GOVERNANCE (Example) ==================== -->
+    <div class="section" id="section-6">
+      <div class="section-header pillar-g">
+        <div class="section-number">06</div>
+        <div class="section-title">
+          <h2>지배구조</h2>
+          <div class="title-en">Governance</div>
+        </div>
+      </div>
+      <!-- Governance section content -->
+    </div>
+
+    <!-- ==================== SECTION 8: APPENDIX (Framework Index Example) ==================== -->
+    <div class="section" id="section-8">
+      <div class="section-header">
+        <div class="section-number">08</div>
+        <div class="section-title">
+          <h2>부록</h2>
+          <div class="title-en">Appendix</div>
+        </div>
+      </div>
+
+      <h3>8.1.1 GRI Content Index</h3>
+      <table class="framework-index">
+        <thead>
+          <tr>
+            <th>GRI Standard</th>
+            <th>Disclosure</th>
+            <th>보고 위치 / Location</th>
+            <th>비고 / Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>GRI 2-1</td>
+            <td>Organizational details / 조직 세부사항</td>
+            <td>Section 2.1</td>
+            <td></td>
+          </tr>
+          <!-- Additional rows... -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ==================== DISCLAIMER ==================== -->
+    <div class="disclaimer">
+      <div class="content-kr">
+        <strong>면책 조항</strong><br>
+        본 보고서는 AI를 활용하여 작성되었으며, 포함된 데이터와 정보의 정확성에 대한 최종 검증은
+        기업 내부 또는 독립된 제3자 기관에 의해 별도로 수행되어야 합니다. 본 보고서는 투자 판단의
+        근거로 사용될 수 없으며, 보고서에 포함된 미래 전망은 불확실성을 수반합니다.
+      </div>
+      <div class="content-en">
+        <strong>Disclaimer</strong><br>
+        This report was prepared with the assistance of AI technology. The accuracy of data and
+        information contained herein should be independently verified by the company or a third-party
+        assurance provider. This report should not be used as a basis for investment decisions.
+        Forward-looking statements in this report are subject to uncertainties and risks.
+      </div>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <div class="report-footer">
+      <p>{{COMPANY_NAME_KR}} | {{COMPANY_NAME_EN}}</p>
+      <p>{{YEAR}} ESG Report / 지속가능경영보고서</p>
+    </div>
+
+  </div><!-- /report-container -->
+
+  <!-- Language Toggle Script -->
+  <script>
+    function setLang(lang) {
+      document.body.className = 'show-' + lang;
+      document.querySelectorAll('.lang-toggle button').forEach(function(btn) {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
