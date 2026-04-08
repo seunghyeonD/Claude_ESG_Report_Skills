@@ -158,6 +158,29 @@ Phase 3에서 구조화된 질문으로 데이터 수집
 1. 먼저 Markdown 파일 생성 (`{company}_ESG_Report_{year}.md`)
 2. 그다음 HTML 파일 생성 (`{company}_ESG_Report_{year}.html`)
 
+### 4.2.1 HTML 인터랙티브 에디터 구조
+HTML은 `html-template.html`의 인터랙티브 에디터 UI를 따릅니다:
+
+**각 섹션은 `section-wrapper`로 감싸서 생성:**
+```html
+<div class="section-wrapper" data-section-id="..." data-section-name="...">
+  <div class="section-controls">
+    <button onclick="moveSection(this,-1)">▲</button>
+    <button onclick="moveSection(this,1)">▼</button>
+    <button class="btn-delete" onclick="removeSection(this)">🗑</button>
+  </div>
+  <div class="section">...</div>
+</div>
+<button class="add-section-btn" onclick="openModal(this)">+ 섹션 추가</button>
+```
+
+**`availableSections` JS 배열에 추가 가능 섹션 데이터를 포함:**
+- 본문에 포함되지 않은 섹션(기후변화, 에너지, 수자원, 생물다양성, 인권, 제품책임, DEI, 주주권리, 리스크, SDGs 등)
+- 각 항목의 `html` 필드에 KPI 카드, 데이터 테이블 등 **풀 데이터**를 포함해야 함 (빈 placeholder 금지)
+- 기업 데이터가 있으면 실제 데이터, 없으면 `[데이터 수집 필요]` 표시
+
+**하단 툴바**: 미리보기 토글, PDF 다운로드 (`window.print()`), 다시 만들기
+
 ### 4.3 Markdown 이중언어 포맷
 
 ```markdown
